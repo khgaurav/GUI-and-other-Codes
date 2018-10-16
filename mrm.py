@@ -46,10 +46,10 @@ def arm():
 		ser.write('H'.encode())
 	elif _5u:
 		print('5up')
-		ser.write('I'.encode())
+		ser.write('K'.encode())
 	elif _5d:
 		print('5down')
-		ser.write('J'.encode())
+		ser.write('L'.encode())
 	elif _6u:
 		print('6up')
 		ser.write('K'.encode())
@@ -73,17 +73,12 @@ def motorcode():
 	x=str(int(x)).zfill(4)
 	y=str(int(y)).zfill(4)
 	
-	#print(x,y)
-
 	ser.write('m'.encode())
 	ser.write(str(gear).encode())
 	ser.write('x'.encode())
 	ser.write(x.encode())
-	#print(ser.read())
-	#print(ser.read(),ser.read(),ser.read(),ser.read())
 	ser.write('y'.encode())
 	ser.write(y.encode())
-	#print(ser.read(),ser.read(),ser.read(),ser.read())
 	print('m'+str(gear)+'x'+x+'y'+y)
 count =0
 ser=serial.Serial('/dev/ttyUSB0',38400)
