@@ -1,3 +1,4 @@
+
 import socket
 import time
 import pygame
@@ -24,44 +25,44 @@ def arm():
 	_5d=j.get_button(3)
 	_6u=0
 	_6d=0
-	transmit.sendto('n',(UDP_IP,UDP_PORT))
+	transmit.send('n')
 	if _1u:
 		print('1up')
-		transmit.sendto('A',(UDP_IP,UDP_PORT))
+		transmit.send('A')
 	elif _1d:
 		print('1down')
-		transmit.sendto('B',(UDP_IP,UDP_PORT))
+		transmit.send('B')
 
 	elif _2u:
 		print('2up')
-		transmit.sendto('C',(UDP_IP,UDP_PORT))
+		transmit.send('C')
 	elif _2d:
 		print('2down')
-		transmit.sendto('D',(UDP_IP,UDP_PORT))
+		transmit.send('D')
 	elif _3u:
 		print('3up')
-		transmit.sendto('E',(UDP_IP,UDP_PORT))
+		transmit.send('E')
 	elif _3d:
 		print('3down')
-		transmit.sendto('F',(UDP_IP,UDP_PORT))
+		transmit.send('F')
 	elif _4u:
 		print('4up')
-		transmit.sendto('G',(UDP_IP,UDP_PORT))
+		transmit.send('G')
 	elif _4d:
 		print('4down')
-		transmit.sendto('H',(UDP_IP,UDP_PORT))
+		transmit.send('H')
 	elif _5u:
 		print('5up')
-		transmit.sendto('I',(UDP_IP,UDP_PORT))
+		transmit.send('I')
 	elif _5d:
 		print('5down')
-		transmit.sendto('J',(UDP_IP,UDP_PORT))
+		transmit.send('J')
 	elif _6u:
 		print('6up')
-		transmit.sendto('K',(UDP_IP,UDP_PORT))
+		transmit.send('K')
 	elif _6d:
 		print('6down')
-		transmit.sendto('L',(UDP_IP,UDP_PORT))
+		transmit.send('L')
 def motorcode():
 	x1=j.get_axis(0)
 	y1=j.get_axis(1)
@@ -97,11 +98,9 @@ def motorcode():
 	clear = lambda : os.system('tput reset')
 	#clear()
 	print(val)
-	try:
-		transmit.sendto(val,(UDP_IP,UDP_PORT))
-	except Exception:
-		print ("Couldn't connect to LAN to UART")
-		exit(0)
+	
+	transmit.send(val)
+	
 	
 	
 
@@ -112,12 +111,13 @@ def motorcode():
 	#print(ser.read(),ser.read(),ser.read(),ser.read())
 
 count=0
-transmit=socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
-#h=socket.gethostbyaddr('192.168.0.3')
-#print h
-UDP_IP = '192.168.43.113' # this IP of my pc. When I want raspberry pi 2`s as a client, I replace it with its IP '169.254.54.195'
-UDP_PORT = 5005
+TCP_IP = '127.0.0.1'
+TCP_PORT = 5005
+BUFFER_SIZE = 1024
+MESSAGE = "Hello, World!"
 
+transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+transmit.connect((TCP_IP, TCP_PORT))
 
 
 
