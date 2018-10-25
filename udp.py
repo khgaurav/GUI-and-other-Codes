@@ -115,7 +115,7 @@ count=0
 transmit=socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
 #h=socket.gethostbyaddr('192.168.0.3')
 #print h
-UDP_IP = '192.168.43.113' # this IP of my pc. When I want raspberry pi 2`s as a client, I replace it with its IP '169.254.54.195'
+UDP_IP = '192.168.1.69' # this IP of my pc. When I want raspberry pi 2`s as a client, I replace it with its IP '169.254.54.195'
 UDP_PORT = 5005
 
 
