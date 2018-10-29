@@ -2,7 +2,7 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture('rtsp://192.168.1.10/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
+cap = cv2.VideoCapture('rtsp://192.168.1.90/user=root&password=mrm&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
 
 while(True):
     ret, frame = cap.read()

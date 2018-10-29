@@ -1,4 +1,3 @@
-
 import socket
 import time
 import pygame
@@ -13,56 +12,63 @@ def map1(x,in_min,in_max,out_min,out_max):
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 def arm():
 	
-	_1u=j.get_button(6)
-	_1d=j.get_button(7)
-	_2u=j.get_button(8)
-	_2d=j.get_button(9)
-	_3u=j.get_button(10)
-	_3d=j.get_button(11)
-	_4u=j.get_button(4)
-	_4d=j.get_button(2)
-	_5u=j.get_button(5)
-	_5d=j.get_button(3)
-	_6u=0
-	_6d=0
-	transmit.send('n')
-	if _1u:
-		print('1up')
-		transmit.send('A')
-	elif _1d:
-		print('1down')
-		transmit.send('B')
+        m1=j.get_button(6)
+        m2=j.get_button(7)
+        m3=j.get_button(8)
+        m4=j.get_button(9)
+        m5=j.get_button(10)
+        m6=j.get_button(11)
+        up=j.get_button(4)
+        down=j.get_button(2)
+        data="nM"
+        if m1:
 
-	elif _2u:
-		print('2up')
-		transmit.send('C')
-	elif _2d:
-		print('2down')
-		transmit.send('D')
-	elif _3u:
-		print('3up')
-		transmit.send('E')
-	elif _3d:
-		print('3down')
-		transmit.send('F')
-	elif _4u:
-		print('4up')
-		transmit.send('G')
-	elif _4d:
-		print('4down')
-		transmit.send('H')
-	elif _5u:
-		print('5up')
-		transmit.send('I')
-	elif _5d:
-		print('5down')
-		transmit.send('J')
-	elif _6u:
-		print('6up')
-		transmit.send('K')
-	elif _6d:
-		print('6down')
-		transmit.send('L')
+                if up:
+                        print('1up'),
+                        data="nA"
+                elif down:
+                        print('1down'),
+                        data="nB"
+        elif m2:
+                if up:
+                        print('2up'),
+                        data="nC"
+                elif down:
+                        print('2down'),
+                        data="nD"
+        elif m3:
+                if up:
+                        print('3up'),
+                        data="nE"
+                elif down:
+                        print('3down'),
+                        data="nF"
+        elif m4:
+                if up:
+                        print('4up'),
+                        data="nG"
+                elif down:
+                        print('4down'),
+                        data="nH"
+        elif m5:
+                if up:
+                        print('5up'),
+                        data="nI"
+                elif down:
+                        print('5down'),
+                        data="nJ"
+        elif m6:
+                if up:
+                        print('6up'),
+                        data="nK"
+                elif down:
+                        print('6down'),
+                        data="nL"
+        else:
+                print("N/A"),
+        print("")                
+        transmit.send(data)
+
 def motorcode():
 	x1=j.get_axis(0)
 	y1=j.get_axis(1)
@@ -94,6 +100,7 @@ def motorcode():
 
 	x=str(int(x)).zfill(4)
 	y=str(int(y)).zfill(4)
+	
 	val="m"+str(gear)+"x"+str(x)+"y"+str(y)
 	clear = lambda : os.system('tput reset')
 	#clear()
@@ -111,7 +118,7 @@ def motorcode():
 	#print(ser.read(),ser.read(),ser.read(),ser.read())
 
 count=0
-TCP_IP = '127.0.0.1'
+TCP_IP = '192.168.1.7'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024
 MESSAGE = "Hello, World!"
@@ -132,33 +139,40 @@ adx='a'
 ady='b'
 switch=True
 active=True
+global safe
+safe=1
 while(1):
+        
+        
+        if safe is 1:
+                safe = 2
+        else:
+                safe = 1
+        pygame.event.pump()
+        on=j.get_button(1)
+        if on:
+                sleep(0.2)
+                if j.get_button(1):
+                        if active==True:
+                                active=False
+                                print('Idle')
+                        else:
+                                active=True
+                                print('Active')
 
-	pygame.event.pump()
-	on=j.get_button(1)
-	if on:
-		sleep(0.2)
-		if j.get_button(1):
-			if active==True:
-				active=False
-				print('Idle')
-			else:
-				active=True
-				print('Active')
+        if active:
+                change=j.get_button(0)
+                if change:
+                        sleep(0.2)
+                        if j.get_button(0):
+                                if switch==True:
+                                        switch=False
+                                        print('Arm')
+                                else:
+                                        switch=True
+                                        print('Motor')
 
-	if active:
-		change=j.get_button(0)
-		if change:
-			sleep(0.2)
-			if j.get_button(0):
-				if switch==True:
-					switch=False
-					print('Arm')
-				else:
-					switch=True
-					print('Motor')
-
-		if switch:
-			motorcode()
-		else:
-			arm()
+                if switch:
+                        motorcode()
+                else:
+                        arm()
