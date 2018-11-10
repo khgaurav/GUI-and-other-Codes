@@ -12,7 +12,7 @@ from pygame.math import Vector2
 def map1(x,in_min,in_max,out_min,out_max):
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 def arm():
-	
+		
         m1=j.get_button(6)
         m2=j.get_button(7)
         m3=j.get_button(8)
@@ -25,16 +25,17 @@ def arm():
         if m5:
 
                 if up:
+
                         print('swivel clockwise'),
                         data="nA"
                 elif down:
                         print('swivel anticlockwise'),
                         data="nB"#swivel
         elif m6:
-                if up:
+                if down:
                         print('actuator up'),
                         data="nC"
-                elif down:
+                elif up:
                         print('actuator down'),
                         data="nD"#actuator
         elif m3:
@@ -45,28 +46,29 @@ def arm():
                         print('roll clockwise'),
                         data="nF"
         elif m4:
-                if down:
+                if up:
                         print('2nd link down'),
                         data="nG"
-                elif up:			
+                elif down:			
                         print('2nd link up'),
                         data="nH"
         elif m2:
-                if down:
+                if up:
                         print('pitch down'),
                         data="nI"
-                elif up:
+                elif down:
                         print('pitch up'),
                         data="nJ"
         elif m1:
                 if up:
-                        print('6up'),
+                        print('gripper open'),
                         data="nK"
                 elif down:
-                        print('6down'),
+                        print('gripper close'),
                         data="nL"#gripper
         else:
                 print("N/A"),
+        pygame.display.set_caption('Motor {:2s} '.format(data))
         print(data)                
         transmit.send(data)
 
