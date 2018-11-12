@@ -20,9 +20,9 @@ def digitalcam9():
 	os.system(cmd)
 	
 	sleep(1)
-	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7.15"], stdout=subprocess.PIPE, shell=True)
+	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7"], stdout=subprocess.PIPE, shell=True)
 	(out, err) = proc.communicate()
-	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7.15+\ Shell\" set_window --name \"Motorcode\"")
+	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7+\ Shell\" set_window --name \"Motorcode\"")
 	for i in out.split():
 		os.system("xdotool windowminimize "+i.strip())
 
@@ -39,11 +39,11 @@ def digitalcam10():
 	cmd="xdotool windowmove "+out.strip()+" 0 0 &"
 	os.system(cmd)
 	sleep(1)
-	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7.15"], stdout=subprocess.PIPE, shell=True)
+	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7"], stdout=subprocess.PIPE, shell=True)
 
 	(out, err) = proc.communicate()
 	
-	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7.15+\ Shell\" set_window --name \"Motorcode\"")
+	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7+\ Shell\" set_window --name \"Motorcode\"")
 	for i in out.split():
 		os.system("xdotool windowminimize "+i.strip())
 
@@ -58,11 +58,11 @@ def analogcams():
 	os.system(cmd)
 	
 	#sleep(1)
-	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7.15"], stdout=subprocess.PIPE, shell=True)
+	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7"], stdout=subprocess.PIPE, shell=True)
 	(out, err) = proc.communicate()
 	
 	
-	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7.15+\ Shell\" set_window --name \"Motorcode\"")
+	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7+\ Shell\" set_window --name \"Motorcode\"")
 	for i in out.split():
 		os.system("xdotool windowminimize "+i.strip())
 
@@ -83,7 +83,7 @@ def motorcode():
 	os.system("idle-python2.7 -r tcp_send.py &")
 	sleep(1)
 
-	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7.15"], stdout=subprocess.PIPE, shell=True)
+	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7"], stdout=subprocess.PIPE, shell=True)
 	(out, err) = proc.communicate()
 	#print out
 	for i in out.split():
@@ -91,15 +91,15 @@ def motorcode():
 		print cmd
 		os.system(cmd)
 	
-	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7.15+\ Shell\" set_window --name \"Motorcode\"")
-	#os.system("xdotool search --onlyvisible --sync --classname --sync --name Python\ 2.7.15 windowminimize")
+	#os.system("xdotool search --onlyvisible --sync --name \"Python\ 2.7+\ Shell\" set_window --name \"Motorcode\"")
+	#os.system("xdotool search --onlyvisible --sync --classname --sync --name Python\ 2.7 windowminimize")
 
 Button(a, text="Motorcode", command = motorcode, bg="white", fg="black",font=("comic_sans",15,"bold")).grid(row = 0,column=2)
 
 def autonomous():
 	 os.system("sudo idle-python2.7 -r autnomRec.py &")
 def close():
-	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7.15"], stdout=subprocess.PIPE, shell=True)
+	proc = subprocess.Popen(["xdotool search --onlyvisible --sync --name Python\ 2.7"], stdout=subprocess.PIPE, shell=True)
 	(out, err) = proc.communicate()
 	for i in out.split():
 		os.system("xdotool windowactivate --sync "+i+" key --clearmodifiers \ --delay 100 alt+F4")
