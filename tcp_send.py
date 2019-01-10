@@ -19,51 +19,51 @@ def arm():
         m4=j.get_button(9)
         m5=j.get_button(10)
         m6=j.get_button(11)
-        up=j.get_button(4)
-        down=j.get_button(2)
+        hat=j.get_hat(0)
+        
         data="nM"
         if m5:
 
-                if up:
+                if hat[0]==1 | hat[1]==1:
 
                         print('swivel clockwise'),
                         data="nA"
-                elif down:
+                elif hat[0]==-1 | hat[1]==-1:
                         print('swivel anticlockwise'),
                         data="nB"#swivel
         elif m6:
-                if down:
+                if hat[0]==1 | hat[1]==1:
                         print('actuator up'),
                         data="nC"
-                elif up:
+                elif hat[0]==-1 | hat[1]==-1:
                         print('actuator down'),
                         data="nD"#actuator
         elif m3:
-                if down:
+                if hat[0]==-1 | hat[1]==-1:
                         print('roll anticlockwise'),
                         data="nE"
-                elif up:
+                elif hat[0]==1 | hat[1]==1:
                         print('roll clockwise'),
                         data="nF"
         elif m4:
-                if up:
+                if hat[0]==-1 | hat[1]==-1:
                         print('2nd link down'),
                         data="nG"
-                elif down:			
+                elif hat[0]==1 | hat[1]==1:			
                         print('2nd link up'),
                         data="nH"
         elif m2:
-                if up:
+                if hat[0]==1 | hat[1]==1:
                         print('pitch down'),
                         data="nI"
-                elif down:
+                elif hat[0]==-1 | hat[1]==-1:
                         print('pitch up'),
                         data="nJ"
         elif m1:
-                if up:
+                if hat[0]==1 | hat[1]==1:
                         print('gripper open'),
                         data="nK"
-                elif down:
+                elif hat[0]==-1 | hat[1]==-1:
                         print('gripper close'),
                         data="nL"#gripper
         else:
@@ -142,7 +142,8 @@ global player_rect
 player_rect = player_img.get_rect(center=screen.get_rect().center)
 
 try:
-	while(1):   
+	while(1):
+			print(transmit.recv(1024))    
 	        pygame.event.pump()
 	        on=j.get_button(1)
 	        if on:
