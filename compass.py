@@ -18,13 +18,11 @@ def main():
             if event.type == pg.QUIT:
                 return
             # Use the stick axes to create a vector.
-            vec = Vector2(joysticks[0].get_axis(0), joysticks[0].get_axis(1))
-            radius, angle = vec.as_polar()  # angle is between -180 and 180.
+              # angle is between -180 and 180.
             # Map the angle that as_polar returns to 0-360 with 0 pointing up.
-            adjusted_angle = 100
+            adjusted_angle = 120
             pg.display.set_caption(
-                'radius {:.2f} angle {:.2f} adjusted angle {:.2f}'.format(
-                    radius, angle, adjusted_angle))
+                ' adjusted angle {:.2f}'.format( adjusted_angle))
 
         # Rotate the image and get a new rect.
         player_rotated = pg.transform.rotozoom(player_img, -adjusted_angle, 1)
@@ -39,3 +37,4 @@ def main():
 if __name__ == '__main__':
     main()
     pg.quit()
+
