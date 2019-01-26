@@ -10,12 +10,12 @@ from pygame.math import Vector2
 
     
 def map1(x,in_min,in_max,out_min,out_max):
-	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 def arm():
-		
+        
         m1=j.get_button(6)
         m2=j.get_button(7)
-        m3=j.get_button(8)
+        m3=j.get_button(5)
         m4=j.get_button(9)
         m5=j.get_button(4)
         m6=j.get_button(2)
@@ -26,50 +26,50 @@ def arm():
                 p='Swivel'
                 if hat[0]==1:
 
-                        p='swivel clockwise'
+                        p='swivel clockwise '
                         data="nA"
                 elif hat[0]==-1:
-                        p='swivel anticlockwise'
+                        p='swivel anticlockwise '
                         data="nB"#swivel
-        elif m6:
-                p='1st Link'
+        elif m2:
+                p='2nd Link'
                 if  hat[1]==1:
-                        p='1st link up'
+                        p='2nd link linear down '
                         data="nC"
                 elif hat[1]==-1:
-                        p='1st link down'
+                        p='2nd link linear up '
                         data="nD"#actuator
         elif m3:
-                p='Roll'
-                if hat[0]==-1 :
-                        p='roll anticlockwise'
+                p='pitch'
+                if hat[1]==-1 :
+                        p='pitch up '
                         data="nE"
-                elif hat[0]==1:
-                        p='roll clockwise'
-                        data="nF"
-        elif m1:
-                p='2nd Link'
-                if hat[1]==-1:
-                        p='2nd link down'
-                        data="nG"
-                elif hat[1]==1:			
-                        p='2nd link up'
-                        data="nH"
-        elif m2:
-                p='Pitch'
-                if hat[1]==1:
+                elif hat[1]==1:
                         p='pitch down'
-                        data="nI"
-                elif hat[1]==-1:
-                        p='pitch up'
-                        data="nJ"
+                        data="nF"
+        elif m6:
+                p='gripper'
+                if hat[1]==-1 or hat[0]==-1:
+                        p='gripper close '
+                        data="nG"
+                elif hat[1]==1 or hat[0]==1:         
+                        p='gripper open '
+                        data="nH"
         elif m4:
-                p='Gripper'
-                if hat[0]==1 :
-                        p='gripper open'
+                p='roll'
+                if hat[0]==-1:
+                        p='roll anticlockwise '
+                        data="nI"
+                elif hat[0]==1 :
+                        p='roll clockwise '
+                        data="nJ"
+        elif m1:
+                p='1st link'
+                if hat[1]==-1 :
+                        p='link 1 linear  up'
                         data="nK"
-                elif hat[0]==-1 :
-                        p='gripper close'
+                elif hat[1]==1 :
+                        p='link 1 linear down'
                         data="nL"#gripper
         else:
                 p="N/A"
@@ -118,7 +118,7 @@ def motorcode():
         print(val)
 
         transmit.send(val)
-	
+    
 count=0
 TCP_IP = '192.168.1.7'
 TCP_PORT = 5005
@@ -135,7 +135,7 @@ if pygame.joystick.get_count() == 0:
     print("No joystick detected")
     exit(0)
 j=joystick.Joystick(0)
-j.init()			
+j.init()            
 adx='a'
 ady='b'
 switch=True
@@ -148,50 +148,51 @@ global player_rect
 player_rect = player_img.get_rect(center=screen.get_rect().center)
 
 try:
-	while(1):    
-	        pygame.event.pump()
-	        #print(transmit.recv(1024))
-	        on=j.get_button(1)
-	        if on:
-	                sleep(0.2)
-	                if j.get_button(1):
-	                        if active==True:
-	                                active=False
-	                                print('Idle')
-	                        else:
-	                                active=True
-	                                print('Active')
+    while(1):    
+            pygame.event.pump()
+            #print(transmit.recv(1024))
+            on=j.get_button(1)
+            if on:
+                    sleep(0.2)
+                    if j.get_button(1):
+                            if active==True:
+                                    active=False
+                                    print('Idle')
+                            else:
+                                    active=True
+                                    print('Active')
 
-	        if active:
-	                change=j.get_button(0)
-	                if change:
-	                        sleep(0.2)
-	                        if j.get_button(0):
-	                                if switch==True:
-	                                        switch=False
-	                                        print('Arm')
-	                                else:
-	                                        switch=True
-	                                        print('Motor')
+            if active:
+                    change=j.get_button(0)
+                    if change:
+                            sleep(0.2)
+                            if j.get_button(0):
+                                    if switch==True:
+                                            switch=False
+                                            print('Arm')
+                                    else:
+                                            switch=True
+                                            print('Motor')
 
-	                if switch:
-	                        
-	                        motorcode()
-	                        vec=Vector2(x1,y1)
-	                        radius, angle = vec.as_polar()
-	                        adjusted_angle = (angle+90) % 360
-	                        pygame.display.set_caption('Gear {:2d} '.format(gear))
-	                        # Rotate the image and get a new rect.
-	                        player_rotated = pygame.transform.rotozoom(player_img, -adjusted_angle, 1)
-	                        player_rect = player_rotated.get_rect(center=player_rect.center)
-	                        screen.fill((30, 30, 30))
-	                        screen.blit(player_rotated, player_rect)
-	                        pygame.display.flip()
-	                        clock.tick(60)
-	                        
-	                else:
-	                        arm()
+                    if switch:
+                            
+                            motorcode()
+                            vec=Vector2(x1,y1)
+                            radius, angle = vec.as_polar()
+                            adjusted_angle = (angle+90) % 360
+                            pygame.display.set_caption('Gear {:2d} '.format(gear))
+                            # Rotate the image and get a new rect.
+                            player_rotated = pygame.transform.rotozoom(player_img, -adjusted_angle, 1)
+                            player_rect = player_rotated.get_rect(center=player_rect.center)
+                            screen.fill((30, 30, 30))
+                            screen.blit(player_rotated, player_rect)
+                            pygame.display.flip()
+                            clock.tick(60)
+                            
+                    else:
+                            arm()
 except KeyboardInterrupt:
-	print('lol')
-	pygame.display.quit()
-	pygame.quit()
+    print('lol')
+    pygame.display.quit()
+    pygame.quit()
+
