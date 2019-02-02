@@ -16,7 +16,7 @@ def arm():
         m1=j.get_button(6)
         m2=j.get_button(7)
         m3=j.get_button(5)
-        m4=j.get_button(9)
+        m4=j.get_button(3)
         m5=j.get_button(4)
         m6=j.get_button(2)
         hat=j.get_hat(0)
@@ -81,6 +81,9 @@ def motorcode():
         global x1,y1,gear
         x1=j.get_axis(0)
         y1=j.get_axis(1)
+        c1=j.get_button(6)
+        c2=j.get_button(7)
+
         #print(x1,y1)
         gear=0
         gear=j.get_axis(3)
@@ -100,20 +103,38 @@ def motorcode():
                 x=0
                 y=4999
 
-        if hat[1]==1:
-                y=0
-        elif hat[1]==-1:
-                y=9999
-        if hat[0]==1:
-                x=9999
-        elif hat[0]==-1:
-                x=0
+        # if hat[1]==1:
+        #         y=0
+        # elif hat[1]==-1:
+        #         y=9999
+        # if hat[0]==1:
+        #         x=9999
+        # elif hat[0]==-1:
+        #         x=0
+        p=' '
+        camera="cz"
+        if c1:
+                p='Mast Yaw'
+                if hat[0]==1:
 
+                        p='Mast Yaw clockwise '
+                        camera="ca"
+                elif hat[0]==-1:
+                        p='Mast Yaw anticlockwise '
+                        camera="cb"
+        elif c2:
+                p='Mast Pitch'
+                if  hat[1]==1:
+                        p='Mast Pitch down '
+                        camera="cc"
+                elif hat[1]==-1:
+                        p='Mast Pitch up '
+                        camera="cd"
 
         x=str(int(x)).zfill(4)
         y=str(int(y)).zfill(4)
 
-        val="m"+str(gear)+"x"+str(x)+"y"+str(y)
+        val="m"+str(gear)+"x"+str(x)+"y"+str(y)+camera
         #clear()
         print(val)
 
