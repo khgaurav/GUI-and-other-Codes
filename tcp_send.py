@@ -112,24 +112,24 @@ def motorcode():
         # elif hat[0]==-1:
         #         x=0
         p=' '
-        camera="cz"
+        camera="z"
         if c1:
                 p='Mast Yaw'
                 if hat[0]==1:
 
                         p='Mast Yaw clockwise '
-                        camera="ca"
+                        camera="a"
                 elif hat[0]==-1:
                         p='Mast Yaw anticlockwise '
-                        camera="cb"
+                        camera="b"
         elif c2:
                 p='Mast Pitch'
                 if  hat[1]==1:
                         p='Mast Pitch down '
-                        camera="cc"
+                        camera="c"
                 elif hat[1]==-1:
                         p='Mast Pitch up '
-                        camera="cd"
+                        camera="d"
 
         x=str(int(x)).zfill(4)
         y=str(int(y)).zfill(4)
