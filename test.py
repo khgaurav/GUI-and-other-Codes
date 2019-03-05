@@ -17,7 +17,7 @@ TCP_PORT = 5005
 transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 transmit.connect((TCP_IP, TCP_PORT))
 img = Image.open( "logo.tiff" )
-img = img.rotate(-90)
+img = img.rotate(-90)  
 img = img.transpose(Image.FLIP_LEFT_RIGHT)
 img.load()
 logo = np.asarray( img, dtype="int32" )
@@ -25,8 +25,8 @@ logo = np.asarray( img, dtype="int32" )
 
 x=[]
 y=[]
-endlat=[13.3483330]
-endlon=[74.7920043]
+endlat=[13.3504820,13.3502770,13.3497990]
+endlon=[74.7914680,74.7911590,74.7912990]
 class CenteredArrowItem(pg.ArrowItem):
     def setStyle(self, **opts):
         # http://www.pyqtgraph.org/documentation/_modules/pyqtgraph/graphicsItems/ArrowItem.html#ArrowItem.setStyle
@@ -68,7 +68,9 @@ class MyWidget(pg.GraphicsWindow):
         self.plotItem.setAspectLocked(lock=True, ratio=1)
         self.plotDataItem = self.plotItem.plot([], size=1, pen=None,symbol='o', symbolBrush=(255,255,255,120))
         self.plotDataItem1 = self.plotItem.plot(endlon,endlat, size=10, pen=None,symbol='o', symbolBrush=(255,0,0,120))
-        self.arrow = CenteredArrowItem(angle=0, tipAngle=20, baseAngle=50, headLen=80, tailLen=None, brush=None)
+
+        self.arrow = CenteredArrowItem(angle=0, tipAngle=40, baseAngle=50, headLen=80, tailLen=None, brush=None)
+
         self.proxy = QtGui.QGraphicsProxyWidget()
         self.im1 = pg.ImageView()
         self.im1.setImage(logo)
@@ -76,7 +78,13 @@ class MyWidget(pg.GraphicsWindow):
         self.addItem(self.proxy)
         self.im1.ui.histogram.hide()
         self.im1.ui.menuBtn.hide()
-        self.im1.ui.roiBtn.hide() 
+        self.im1.ui.roiBtn.hide()
+
+        self.proxy1 = QtGui.QGraphicsProxyWidget()
+        self.textbox = QLineEdit(self)
+        self.proxy1.setWidget(self.textbox)
+        self.addItem(self.proxy1)        
+
 
     def setData(self, x, y):
         self.plotDataItem.setData(x, y)
@@ -91,7 +99,7 @@ class MyWidget(pg.GraphicsWindow):
       x.append(longitude)
       self.setData(x, y)
       self.plotItem.removeItem(self.arrow)
-      self.arrow = CenteredArrowItem(angle=int(angle)/2+45, tipAngle=20, baseAngle=50, headLen=80, tailLen=None, brush=None)
+      self.arrow = CenteredArrowItem(angle=int(angle)/2+45, tipAngle=40, baseAngle=40, headLen=40, tailLen=None, brush=None)
       
       self.arrow.setPos(float(longitude),float(latitude))        
       self.plotItem.addItem(self.arrow)
