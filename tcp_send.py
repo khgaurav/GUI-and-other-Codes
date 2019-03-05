@@ -98,26 +98,15 @@ def motorcode():
 		y=map1(y1,-1.0,1.0,0.0,9999)
 		
 		zero=j.get_axis(2)
-		'''
 		if(zero>0.7):
 				x=9999
 				y=4999
 		elif(zero<-0.7):
 				x=0
 				y=4999
-
-		if hat[1]==1:
-				y=0
-		elif hat[1]==-1:
-				y=9999
-		if hat[0]==1:
-				x=9999
-		elif hat[0]==-1:
-				x=0
+	
 		p=' '
-		'''
-		
-		
+	
 		camera="z"
 		if c1:
 		        p='Mast Yaw'
@@ -136,7 +125,7 @@ def motorcode():
 		        elif hat[0]==-1:
 		                p='Mast Pitch up '
 		                camera="d"
-
+    
 		x=str(int(x)).zfill(4)
 		y=str(int(y)).zfill(4)
 		if j.get_button(4):
