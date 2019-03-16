@@ -24,43 +24,43 @@ def arm():
 		data="nM"
 		if m1:
 				p='2nd link'
-				if hat[1]==-1 :
+				if hat[1]==1 :
 					p='link 2 linear  up'
 					data="nG"
-				elif hat[1]==1 :
+				elif hat[1]==-1 :
 					p='link 2 linear down'
 					data="nH"
 				
 		elif m2:
 				p='1st Link'
-				if  hat[1]==1:
+				if  hat[1]==-1:
 						p='1st link linear down '
 						data="nC"
-				elif hat[1]==-1:
+				elif hat[1]==1:
 						p='1st link linear up '
 						data="nD"#actuator
 		elif m3:
 				p='Roll'
 				if hat[0]==1 :
-						p='Roll anticlockwise '
+						p='Roll clockwise '
 						data="nE"
 				elif hat[0]==-1:
-						p='Roll clockwise'
+						p='Roll anticlockwise'
 						data="nF"
 		elif m6:
 				p='gripper'
 				if hat[1]==-1:
-						p='gripper open '
+						p='gripper close '
 						data="nA"
 				elif hat[1]==1:         
-						p='gripper close '
+						p='gripper open '
 						data="nB"
 		elif m4:
 				p='Pitch'
-				if hat[1]==1:
+				if hat[1]==-1:
 						p='Pitch up '
 						data="nI"
-				elif hat[1]==-1:
+				elif hat[1]==1:
 						p='Pitch down'
 						data="nJ"
 		elif m5:
@@ -113,17 +113,17 @@ def motorcode():
 		        if hat[1]==1:
 
 		                p='Mast Yaw clockwise '
-		                camera="d"
+		                camera="b"
 		        elif hat[1]==-1:
 		                p='Mast Yaw anticlockwise '
-		                camera="c"
+		                camera="a"
 		        p='Mast Pitch'
 		        if  hat[0]==-1:
 		                p='Mast Pitch down '
-		                camera="b"
+		                camera="d"
 		        elif hat[0]==1:
 		                p='Mast Pitch up '
-		                camera="a"
+		                camera="c"
     
 		x=str(int(x)).zfill(4)
 		y=str(int(y)).zfill(4)

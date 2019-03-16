@@ -1,27 +1,54 @@
+from PyQt5 import QtCore, QtWidgets, QtGui
+import pyqtgraph as pg
+import numpy as np
 import socket
 import pyproj
+from pyqtgraph import functions as fn
 from gps3 import gps3
 import sys
-import numpy as np
-from pyqtgraph.Qt import QtGui, QtCore
-
-import pyqtgraph as pg
-from pyqtgraph import functions as fn
-from time import sleep
-endlat=[13.3483330]
-endlon=[74.7920043]
-
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
+import cv2
+from PIL import Image
 g = pyproj.Geod(ellps='WGS84')
 TCP_IP = '192.168.1.70'
 TCP_PORT = 5005
 transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 transmit.connect((TCP_IP, TCP_PORT))
-latitude,longitude,angle=transmit.recv(1024).split(',')
-transmit.send("a")
-print(latitude,longitude,angle)
+# img = Image.open( "logo.tiff" )
+# img = img.rotate(-90)  
+# img = img.transpose(Image.FLIP_LEFT_RIGHT)
+# img.load()
+# logo = np.asarray( img, dtype="int32" )
 
-def map1(x,in_min,in_max,out_min,out_max):
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+x=[]
+y=[]
+#endlat=[13.3500460]
+#ndlon=[74.7916420]
+
+#endlat=[13.3498887]
+#endlon=[74.7915768]
+
+endlat=[13.3503957]
+endlon=[74.7915252]
+
+#endlat=[13.3506374]
+#endlon=[74.7917847]
+
+# endlat=[13.3501817]
+# endlon=[74.7912211]
+
+# endlat=[13.3496607]
+# endlon=[74.7915165]
+
+def get_heading(longitude, latitude):
+        global endlat, endlon
+        (az12, az21, dist) = g.inv(longitude, latitude, endlon, endlat)
+        if az12<0:
+            az12=az12+360
+        return az12, dist
 
 class CenteredArrowItem(pg.ArrowItem):
     def setStyle(self, **opts):
@@ -44,77 +71,79 @@ class CenteredArrowItem(pg.ArrowItem):
             self.setFlags(self.flags() | self.ItemIgnoresTransformations)
         else:
             self.setFlags(self.flags() & ~self.ItemIgnoresTransformations)
+class MyWidget(pg.GraphicsWindow):
+    
 
-app = pg.QtGui.QApplication([])  
-window = pg.GraphicsWindow(size=(800, 400))
-window.setAntialiasing(True)
-tracker = window.addPlot(row=0, col=0,title='GPS Position')
-tracker.setGeometry(250,180,500,600)
-arrow = CenteredArrowItem(angle=360, headLen=40, tipAngle=45, baseAngle=30)   
-arrow1 = CenteredArrowItem(angle=360, headLen=40, tipAngle=45, baseAngle=30)
-tracker.addItem(arrow)
-tracker.addItem(arrow1)
-tracker.hideAxis('bottom')
-tracker.hideAxis('left')
-p2 = window.addPlot(row=1, col=0)
+    def __init__(self, parent=None):
+        super(MyWidget, self).__init__(parent=parent)
 
-p2.plot([endlon], [endlat],size=10, pen=None,symbol='o', symbolBrush=(255,0,0))
-p2.setAspectLocked(lock=True, ratio=1)
-#p2.setAutoPan(x=True, y=True)
-x=[]
-y=[]
-proxy = QtGui.QGraphicsProxyWidget()
-button = QtGui.QPushButton('Point 1')
-button.move(20,80)
-button.resize(20,80)
-proxy.setWidget(button)
-textbox = QtGui.QLineEdit()
-proxy.setWidget(textbox)
-p3 = window.addLayout(row=2, col=0)
-p3.addItem(proxy,row=0,col=1)
-p3.addItem(textbox,row=0,col=1)
+        self.mainLayout = QtWidgets.QVBoxLayout()
+        self.setLayout(self.mainLayout)
 
-def get_heading():
-	global longitude, latitude, endlat, endlon
-	(az12, az21, dist) = g.inv(longitude, latitude, endlon, endlat)
-	if az12<0:
-		az12=az12+360
-	return az12, dist
-def compassgps():
-    global arrow,arrow1
-    while True:
-    	#compass()
-
-    	latitude,longitude,angle=transmit.recv(1024).split(',')
-    	transmit.send("a")
-    	if not latitude: break
-    	print(latitude,longitude,angle)
-        y.append(latitude)
-        x.append(longitude)
-        s1 = p2.plot(x,y,size=10, pen=None,symbol='o', symbolBrush=(255,255,255,120))
-        
-    	#print(transmit.recv(1024).split(','))
-
-        tracker.removeItem(arrow)
-        tracker.removeItem(arrow1)
-        p2.removeItem(arrow)
-        adjusted_angle,distance = get_heading()
-        arrow = CenteredArrowItem(angle=int(angle)/2+45, tipAngle=20, baseAngle=50, headLen=80, tailLen=None, brush=None)   
-        arrow1 = CenteredArrowItem(angle=int(adjusted_angle)/2+45, tipAngle=20, baseAngle=50, headLen=80, tailLen=None, brush='w')
-
-        tracker.setTitle(str(distance))
-        tracker.addItem(arrow)
-        tracker.addItem(arrow1)
-        #arrow.setPos(float(longitude),float(latitude))
-        #p2.addItem(arrow)
-        app.processEvents()
-        sleep(0.02)
-        
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(100) # in milliseconds
+        self.timer.start()
+        self.timer.timeout.connect(self.onNewData)
 
 
-#def compass():
-compassgps()
+        self.plotItem = self.addPlot(title="GPS Plotting")
+        self.plotItem.setAspectLocked(lock=True, ratio=1)
+        self.plotDataItem = self.plotItem.plot([], size=0, pen=None, symbolPen=None, symbolSize=10, symbol='o', symbolBrush=(255,255,255,10))
+        self.plotDataItem1 = self.plotItem.plot(endlon,endlat, size=10, pen=None,symbol='o', symbolBrush=(255,0,0,255))
+        #self.plotDataItem1.addLegend()
+        #legend.setParentItem(plotItem)
+
+        self.arrow = CenteredArrowItem(angle=0, tipAngle=40, baseAngle=50, headLen=80, tailLen=None, brush=None)
+
+        # self.proxy = QtGui.QGraphicsProxyWidget()
+        # self.im1 = pg.ImageView()
+        # self.im1.setImage(logo)
+        # self.proxy.setWidget(self.im1)
+        # self.addItem(self.proxy)
+        # self.im1.ui.histogram.hide()
+        # self.im1.ui.menuBtn.hide()
+        # self.im1.ui.roiBtn.hide()
+
+        # self.proxy1 = QtGui.QGraphicsProxyWidget()
+        # self.textbox = QLineEdit(self)
+        # self.proxy1.setWidget(self.textbox)
+        # self.addItem(self.proxy1)        
 
 
-       
+    def setData(self, x, y):
+        self.plotDataItem.setData(x[len(x)-1000:], y[len(x)-1000:])
 
+    
+
+    def onNewData(self):
+      global x,y
+      latitude,longitude,angle=transmit.recv(1024).split(',')
+      transmit.send("a")
+      print(latitude,longitude,angle)        
+      y.append(latitude)
+      x.append(longitude)
+      self.setData(x, y)
+      self.plotItem.removeItem(self.arrow)
+      self.arrow = CenteredArrowItem(angle=int(angle)/2+45, tipAngle=40, baseAngle=40, headLen=40, tailLen=None, brush=None)
+      adjusted_angle,distance = get_heading(longitude,latitude)
+      self.plotItem.setTitle('Distance: '+str(round(distance[0],3))+'   Angle: '+str(int(adjusted_angle)-int(angle)))
+      self.arrow.setPos(float(longitude),float(latitude))        
+      self.plotItem.addItem(self.arrow)
+      #self.scene.addLine(QLineF(x1, y1, x2, y2))
+
+
+
+def main():
+    app = QtWidgets.QApplication([])
+
+    pg.setConfigOptions(antialias=True) # True seems to work as well
+
+    win = MyWidget()
+    win.show()
+    win.resize(800,600) 
+    
+    win.raise_()
+    app.exec_()
+
+if __name__ == "__main__":
+    main()

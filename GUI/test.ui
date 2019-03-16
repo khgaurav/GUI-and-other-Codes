@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="Logo">
+    <property name="geometry">
+     <rect>
+      <x>1265</x>
+      <y>1</y>
+      <width>100</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>logo1.png</pixmap>
+    </property>
+   </widget>
+   <widget class="MyWidget" name="Plotting" native="true">
+    <property name="geometry">
+     <rect>
+      <x>6</x>
+      <y>107</y>
+      <width>1361</width>
+      <height>661</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLineEdit" name="Latitude_1">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Latitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="Latitude_2">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Latitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="Latitude_3">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Latitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="Latitude_4">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Latitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLineEdit" name="Latitude_5">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Latitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="Latitude_6">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Latitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="Longitude_1">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Longitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="Longitude_2">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Longitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="Longitude_3">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Longitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLineEdit" name="Longitude_4">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Longitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QLineEdit" name="Longitude_5">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Longitude</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QLineEdit" name="Longitude_6">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Longitude</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>7</x>
+      <y>80</y>
+      <width>197</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="PlotButton">
+       <property name="text">
+        <string>Plot</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="chgEnd">
+       <property name="text">
+        <string>Next Co-ods</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <zorder>Plotting</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>Logo</zorder>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyWidget</class>
+   <extends>QWidget</extends>
+   <header>RPi_data.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="xz.qrc"/>
+ </resources>
+ <connections/>
+</ui>
