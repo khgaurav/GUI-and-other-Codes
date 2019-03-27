@@ -11,12 +11,13 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 import cv2
 from PIL import Image
+import Queue
+from threading import Thread
+from multiprocessing import Process, Manager, Queue
+import sched, time, threading
 
 g = pyproj.Geod(ellps='WGS84')
-TCP_IP = '192.168.1.70'
-TCP_PORT = 5005
-transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-transmit.connect((TCP_IP, TCP_PORT))
+
 # img = Image.open( "logo.tiff" )
 # img = img.rotate(-90)  
 # img = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -80,7 +81,23 @@ class MyWidget(pg.GraphicsWindow):
 
         self.mainLayout = QtWidgets.QVBoxLayout()
         self.setLayout(self.mainLayout)
-
+        self.proxy1 = QtGui.QGraphicsProxyWidget()
+        self.startButton = QPushButton(self)
+        self.startButton.clicked.connect(self.threadPlot)
+        self.startButton.setText("Start Plotting")
+        self.proxy1.setWidget(self.startButton)
+        self.addItem(self.proxy1)
+         
+    def threadPlot(self):
+        thread = threading.Thread(target=self.startPlotting, args=())
+        thread.daemon = True                            
+        thread.start()
+        
+    def startPlotting(self):
+        TCP_IP = '192.168.1.70'
+        TCP_PORT = 5005
+        transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        transmit.connect((TCP_IP, TCP_PORT))
         self.timer = QtCore.QTimer(self)
         self.timer.setInterval(100) # in milliseconds
         self.timer.start()
@@ -106,10 +123,7 @@ class MyWidget(pg.GraphicsWindow):
         # self.im1.ui.menuBtn.hide()
         # self.im1.ui.roiBtn.hide()
 
-        # self.proxy1 = QtGui.QGraphicsProxyWidget()
-        # self.textbox = QLineEdit(self)
-        # self.proxy1.setWidget(self.textbox)
-        # self.addItem(self.proxy1)        
+
 
 
     def setData(self, x, y):
@@ -157,5 +171,5 @@ def main():
     win.raise_()
     app.exec_()
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

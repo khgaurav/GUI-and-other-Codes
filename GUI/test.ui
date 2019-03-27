@@ -33,17 +33,25 @@
    <widget class="MyWidget" name="Plotting" native="true">
     <property name="geometry">
      <rect>
-      <x>6</x>
-      <y>107</y>
-      <width>1361</width>
-      <height>661</height>
+      <x>0</x>
+      <y>70</y>
+      <width>551</width>
+      <height>251</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>944</width>
+      <height>66</height>
+     </rect>
+    </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
       <widget class="QLineEdit" name="Latitude_1">
@@ -167,39 +175,60 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="App" name="cam8" native="true">
     <property name="geometry">
      <rect>
-      <x>7</x>
-      <y>80</y>
-      <width>197</width>
-      <height>31</height>
+      <x>550</x>
+      <y>70</y>
+      <width>640</width>
+      <height>480</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="PlotButton">
-       <property name="text">
-        <string>Plot</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="chgEnd">
-       <property name="text">
-        <string>Next Co-ods</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+   </widget>
+   <widget class="QPushButton" name="PlotButton">
+    <property name="geometry">
+     <rect>
+      <x>426</x>
+      <y>71</y>
+      <width>38</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Plot</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="chgEnd">
+    <property name="geometry">
+     <rect>
+      <x>464</x>
+      <y>71</y>
+      <width>85</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Next Co-ods</string>
+    </property>
    </widget>
    <zorder>Plotting</zorder>
    <zorder>layoutWidget</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>mastCam</zorder>
    <zorder>Logo</zorder>
+   <zorder>cam8</zorder>
+   <zorder>PlotButton</zorder>
+   <zorder>chgEnd</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>App</class>
+   <extends>QWidget</extends>
+   <header>cam8.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>MyWidget</class>
    <extends>QWidget</extends>
