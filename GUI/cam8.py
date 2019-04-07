@@ -4,7 +4,7 @@ from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton
 import datetime
-
+from PyQt5 import QtCore
 
 class App(QWidget):
     def __init__(self, parent=None):
@@ -26,9 +26,15 @@ class App(QWidget):
         self.label1.move(580, 620)
 
         self.mastCam = QPushButton(self)
+        self.mastCam.setGeometry(QtCore.QRect(0, 0, 85, 16))
         self.mastCam.setObjectName("mastCam")
         self.mastCam.setText("Mast Camera")
         self.mastCam.clicked.connect(self.startThread)
+        self.closeButton = QPushButton(self)
+        self.closeButton.setObjectName("closeButton")
+        self.closeButton.setText("Close")
+        self.closeButton.setGeometry(QtCore.QRect(85, 0, 85, 16))
+        self.closeButton.clicked.connect(self.closeWidget)
         
     def startThread(self):
         self.th = Thread(self)
@@ -36,10 +42,9 @@ class App(QWidget):
         self.th.changeLabel.connect(self.label1.setText)
         self.th.start()
 
-    def closeEvent(self, event):
-        self.th.stop()
-        QWidget.closeEvent(self, event)
-
+    def closeWidget(self):
+        self.close()
+        
 class Thread(QThread):
     changePixmap = pyqtSignal(QPixmap)
     changeLabel = pyqtSignal(str)
@@ -47,9 +52,11 @@ class Thread(QThread):
     def __init__(self, parent=None):
         QThread.__init__(self, parent=parent)
         self.isRunning = True
+        
+        
 
     def run(self):
-        cap = cv2.VideoCapture('rtsp://192.168.1.8/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
+        cap = cv2.VideoCapture(0)#'rtsp://192.168.1.8/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
 
         while self.isRunning:
 
@@ -63,7 +70,7 @@ class Thread(QThread):
                 now = datetime.datetime.now()
                 sec = now.second
                 self.changeLabel.emit(str(sec))
-        btn.clicked.connect(self.buttonClicked)
+        #btn.clicked.connect(self.buttonClicked)
     def buttonClicked(self):
         os.system(cmd)
         QtCore.QCoreApplication.instance().quit()

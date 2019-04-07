@@ -8,13 +8,11 @@ from gps3 import gps3
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QThread
+
 import cv2
-from PIL import Image
-import Queue
-from threading import Thread
-from multiprocessing import Process, Manager, Queue
-import sched, time, threading
+
+
 
 g = pyproj.Geod(ellps='WGS84')
 
@@ -73,6 +71,27 @@ class CenteredArrowItem(pg.ArrowItem):
             self.setFlags(self.flags() | self.ItemIgnoresTransformations)
         else:
             self.setFlags(self.flags() & ~self.ItemIgnoresTransformations)
+  
+
+class Thread(QThread):
+    dataChanged = QtCore.pyqtSignal(str)
+    def __init__(self, parent=None):
+        QThread.__init__(self, parent=parent)
+        self.isRunning = True
+        
+    def run(self):
+        TCP_IP = '127.0.0.1'
+        #TCP_IP = '192.168.1.70'
+        TCP_PORT = 5005
+        self.transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.transmit.connect((TCP_IP, TCP_PORT))
+        while True:
+            data=self.transmit.recv(1024)
+            self.transmit.send("a")
+            self.dataChanged.emit(data)
+        
+
+
 class MyWidget(pg.GraphicsWindow):
     
 
@@ -81,29 +100,16 @@ class MyWidget(pg.GraphicsWindow):
 
         self.mainLayout = QtWidgets.QVBoxLayout()
         self.setLayout(self.mainLayout)
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(100) # in milliseconds
+        self.timer.start()
+        #self.timer.timeout.connect(self.onNewData)
         self.proxy1 = QtGui.QGraphicsProxyWidget()
         self.startButton = QPushButton(self)
         self.startButton.clicked.connect(self.threadPlot)
         self.startButton.setText("Start Plotting")
         self.proxy1.setWidget(self.startButton)
         self.addItem(self.proxy1)
-         
-    def threadPlot(self):
-        thread = threading.Thread(target=self.startPlotting, args=())
-        thread.daemon = True                            
-        thread.start()
-        
-    def startPlotting(self):
-        TCP_IP = '192.168.1.70'
-        TCP_PORT = 5005
-        transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        transmit.connect((TCP_IP, TCP_PORT))
-        self.timer = QtCore.QTimer(self)
-        self.timer.setInterval(100) # in milliseconds
-        self.timer.start()
-        self.timer.timeout.connect(self.onNewData)
-
-
         self.plotItem = self.addPlot(title="GPS Plotting")
         self.plotItem.setAspectLocked(lock=True, ratio=1)
         self.plotDataItem = self.plotItem.plot([], size=0, pen=None, symbolPen=None, symbolSize=10, symbol='o', symbolBrush=(255,255,255,10))
@@ -113,6 +119,7 @@ class MyWidget(pg.GraphicsWindow):
         #legend.setParentItem(plotItem)
 
         self.arrow = CenteredArrowItem(angle=0, tipAngle=40, baseAngle=50, headLen=80, tailLen=None, brush=None)
+        
 
         # self.proxy = QtGui.QGraphicsProxyWidget()
         # self.im1 = pg.ImageView()
@@ -123,12 +130,21 @@ class MyWidget(pg.GraphicsWindow):
         # self.im1.ui.menuBtn.hide()
         # self.im1.ui.roiBtn.hide()
 
-
-
-
-    def setData(self, x, y):
-        global endlat,endlon
-        self.plotDataItem.setData(x[len(x)-1000:], y[len(x)-1000:])
+         
+    def threadPlot(self):
+        self.th = Thread()
+        self.th.dataChanged.connect(self.setData)
+        self.th.start()
+    
+    def setData(self, data):
+        global endlat,endlon, x, y
+        latitude,longitude,angle=data.split(',')
+        latitude,longitude,angle=float(latitude),float(longitude),float(angle)
+        print(latitude,longitude,angle)
+        y.append(latitude)
+        x.append(longitude)
+        QThread.currentThread().msleep(100)
+        self.plotDataItem.setData(x,y)#[len(x)-1000:], y[len(x)-1000:])
         f=open('endlat.txt','r+')
         endlat=(f.read())
         f.close()
@@ -139,25 +155,15 @@ class MyWidget(pg.GraphicsWindow):
         endlat=[float(endlat[1:].partition(",")[0])]
         self.plotDataItem1.setData(endlon,endlat, size=10, pen=None,symbol='o', symbolBrush=(255,0,0,255))
 
-    
+        self.plotItem.removeItem(self.arrow)
+        self.arrow = CenteredArrowItem(angle=int(angle)/2+45, tipAngle=40, baseAngle=40, headLen=40, tailLen=None, brush=None)
+        adjusted_angle,distance = get_heading(longitude,latitude)
+        self.plotItem.setTitle('Distance: '+str(round(distance[0],3))+'   Angle: '+str(int(adjusted_angle)-int(angle)))
+        self.arrow.setPos(float(longitude),float(latitude))        
+        self.plotItem.addItem(self.arrow)
+        #self.scene.addLine(QLineF(x1, y1, x2, y2))
 
-    def onNewData(self):
-      global x,y,endlat,endlon
-      latitude,longitude,angle=transmit.recv(1024).split(',')
-      transmit.send("a")
-      print(latitude,longitude,angle)        
-      y.append(latitude)
-      x.append(longitude)
-      self.setData(x, y)
-      self.plotItem.removeItem(self.arrow)
-      self.arrow = CenteredArrowItem(angle=int(angle)/2+45, tipAngle=40, baseAngle=40, headLen=40, tailLen=None, brush=None)
-      adjusted_angle,distance = get_heading(longitude,latitude)
-      self.plotItem.setTitle('Distance: '+str(round(distance[0],3))+'   Angle: '+str(int(adjusted_angle)-int(angle)))
-      self.arrow.setPos(float(longitude),float(latitude))        
-      self.plotItem.addItem(self.arrow)
-      #self.scene.addLine(QLineF(x1, y1, x2, y2))
-
-
+      
 
 def main():
     app = QtWidgets.QApplication([])

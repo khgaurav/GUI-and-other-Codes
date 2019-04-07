@@ -13,12 +13,13 @@ def map1(x,in_min,in_max,out_min,out_max):
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 def arm():
 		
-		m1=j.get_button(6)
-		m2=j.get_button(7)
-		m3=j.get_button(3)
-		m4=j.get_button(5)
-		m5=j.get_button(4)
-		m6=j.get_button(2)
+		m1=j.get_button(7)
+		m2=j.get_button(6)
+		m3=j.get_button(8)
+		m4=j.get_button(8)
+		m5=j.get_button(7)
+		m6=j.get_button(9)
+		m7=j.get_button(10)
 		hat=j.get_hat(0)
 		p=' '
 		data="nM"
@@ -39,31 +40,6 @@ def arm():
 				elif hat[1]==1:
 						p='1st link linear up '
 						data="nD"#actuator
-		elif m3:
-				p='Roll'
-				if hat[0]==1 :
-						p='Roll clockwise '
-						data="nE"
-				elif hat[0]==-1:
-						p='Roll anticlockwise'
-						data="nF"
-		elif m6:
-				p='gripper'
-				if hat[1]==-1:
-						p='gripper close '
-						data="nA"
-				elif hat[1]==1:         
-						p='gripper open '
-						data="nB"
-		elif m4:
-				p='Pitch'
-				if hat[1]==-1:
-						p='Pitch up '
-						data="nI"
-				elif hat[1]==1:
-						p='Pitch down'
-						data="nJ"
-		elif m5:
 				p='Swivel'
 				if hat[0]==1:
 
@@ -72,6 +48,43 @@ def arm():
 				elif hat[0]==-1:
 						p='swivel anticlockwise '
 						data="nL"#swivel
+		elif m3:
+				p='Roll'
+				if hat[0]==1 :
+						p='Roll clockwise '
+						data="nE"
+				elif hat[0]==-1:
+						p='Roll anticlockwise'
+						data="nF"
+				p='Pitch'
+				if hat[1]==-1:
+						p='Pitch up '
+						data="nI"
+				elif hat[1]==1:
+						p='Pitch down'
+						data="nJ"
+		elif m6:
+				p='gripper'
+				if hat[1]==-1:
+						p='gripper close '
+						data="nA"
+				elif hat[1]==1:         
+						p='gripper open '
+						data="nB"
+		
+				
+		
+				
+		elif m7:
+				p='Allen'
+				if hat[0]==1:
+
+						p='Allen clockwise '
+						data="nP"
+				elif hat[0]==-1:
+						p='Allen anticlockwise '
+						data="nQ"#swivel
+
 				
 		else:
 				p="N/A"

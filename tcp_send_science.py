@@ -23,50 +23,50 @@ def arm():
         p=' '
         data="nM"
         if m5:
-                p='collector plate'
-                if hat[0]==1:
+                p='vinegar'
+                if hat[1]==1:
 
-                        p='collector clockwise '
+                        p='vinegar down '
                         data="nG"
-                elif hat[0]==-1:
-                        p='collector anticlockwise '
+                elif hat[1]==-1:
+                        p='vinegar up '
                         data="nH"#swivel
-        elif m2:
-                p='water tube'
+        elif m6:
+                p='lead screw1'
                 if  hat[1]==1:
-                        p='water tube down '
+                        p='lead screw down '
                         data="nC"
                 elif hat[1]==-1:
-                        p='water tube up '
+                        p='lead screw  up '
                         data="nD"#actuator
-        elif m6:
-                p='screw'
+        elif m2:
+                p='water tube'
                 if hat[1]==-1 :
-                        p='lead screw up '
+                        p='water tube up '
                         data="nI"
                 elif hat[1]==1:
-                        p='lead screw down'
+                        p='water tube down'
                         data="nJ"
         elif m1:
-                p='auger'
+                p='Auger '
                 if hat[1]==-1 or hat[0]==-1:
-                        p='auger close '
+                        p='Auger drill up '
                         data="nA"
                 elif hat[1]==1 or hat[0]==1:         
-                        p='auger open '
+                        p='auger remove '
                         data="nB"
         elif m3:
-                p='vinegar tube'
+                p='collector plate'
                 if hat[0]==-1:
-                        p='vinegar up '
+                        p='collector clockwise '
                         data="nE"
                 elif hat[0]==1 :
-                        p='vinegar down '
+                        p='collector anti-clockwise '
                         data="nF"
         elif m4:
-                p='killll'
+                p='Drill Burst'
                 if hat[1]==-1 :
-                        p='full kill'
+                        p='Drill Active'
                         data="nK"
                 elif hat[1]==1 :
                         p='full kill'
@@ -112,24 +112,24 @@ def motorcode():
         # elif hat[0]==-1:
         #         x=0
         p=' '
-        camera="cz"
+        camera="z"
         if c1:
                 p='Mast Yaw'
-                if hat[0]==1:
+                if hat[1]==1:
 
                         p='Mast Yaw clockwise '
-                        camera="ca"
-                elif hat[0]==-1:
+                        camera="a"
+                elif hat[1]==-1:
                         p='Mast Yaw anticlockwise '
-                        camera="cb"
+                        camera="b"
         elif c2:
                 p='Mast Pitch'
-                if  hat[1]==1:
+                if  hat[0]==1:
                         p='Mast Pitch down '
-                        camera="cc"
-                elif hat[1]==-1:
+                        camera="c"
+                elif hat[0]==-1:
                         p='Mast Pitch up '
-                        camera="cd"
+                        camera="d"
 
         x=str(int(x)).zfill(4)
         y=str(int(y)).zfill(4)
@@ -214,7 +214,6 @@ try:
                     else:
                             arm()
 except KeyboardInterrupt:
-    transmit.send('m4x4999y4999z')    
-    print('Rover mar gaya')
+    print('lol')
     pygame.display.quit()
     pygame.quit()
