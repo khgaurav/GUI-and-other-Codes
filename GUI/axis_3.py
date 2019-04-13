@@ -1,4 +1,4 @@
-import sys, os
+import sys
 import cv2
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.QtGui import QPixmap, QImage
@@ -6,10 +6,10 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton
 import datetime
 from PyQt5 import QtCore
 
-class App(QWidget):
+class axis_3(QWidget):
     def __init__(self, parent=None):
-        super(App, self).__init__(parent=parent)
-        self.title = 'Mast Camera'
+        super(axis_3, self).__init__(parent=parent)
+        self.title = 'Axis Camera 3'
         
         self.width = 320
         self.height = 240
@@ -23,13 +23,13 @@ class App(QWidget):
         self.label = QLabel(self)        
         self.label.resize(320, 240)
         self.label1 = QLabel(self)
-        self.label1.move(580, 620)
+        #self.label1.move(320, 240)
 
-        self.mastCam = QPushButton(self)
-        self.mastCam.setGeometry(QtCore.QRect(0, 0, 85, 16))
-        self.mastCam.setObjectName("mastCam")
-        self.mastCam.setText("Mast Camera")
-        self.mastCam.clicked.connect(self.startThread)
+        self.axis = QPushButton(self)
+        self.axis.setGeometry(QtCore.QRect(0, 0, 85, 16))
+        self.axis.setObjectName("axis")
+        self.axis.setText("Axis 3")
+        self.axis.clicked.connect(self.startThread)
         self.closeButton = QPushButton(self)
         self.closeButton.setObjectName("closeButton")
         self.closeButton.setText("Close")
@@ -43,8 +43,7 @@ class App(QWidget):
         self.th.start()
 
     def closeWidget(self):
-        os.execl(sys.executable, sys.executable, * sys.argv)
-        
+        self.close()
         
 class Thread(QThread):
     changePixmap = pyqtSignal(QPixmap)
@@ -57,7 +56,7 @@ class Thread(QThread):
         
 
     def run(self):
-        cap = cv2.VideoCapture('rtsp://192.168.1.8/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
+        cap = cv2.VideoCapture('http://root:mrm@192.168.1.90/axis-cgi/mjpg/video.cgi?camera=3')#'rtsp://192.168.1.8/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
 
         while self.isRunning:
 
@@ -66,7 +65,7 @@ class Thread(QThread):
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 convertToQtFormat = QImage(rgbImage.data, rgbImage.shape[1], rgbImage.shape[0], QImage.Format_RGB888)
                 convertToQtFormat = QPixmap.fromImage(convertToQtFormat)
-                p = convertToQtFormat.scaled(320, 240, Qt.KeepAspectRatio)
+                p = convertToQtFormat.scaled(320, 240)#), Qt.KeepAspectRatio)
                 self.changePixmap.emit(p)
                 now = datetime.datetime.now()
                 sec = now.second
@@ -85,6 +84,6 @@ class Thread(QThread):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = App()
+    ex = axis_1()
     ex.show()
     sys.exit(app.exec_())

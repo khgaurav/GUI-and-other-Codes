@@ -13,26 +13,26 @@ def map1(x,in_min,in_max,out_min,out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 def arm():
         
-        m1=j.get_button(6)
-        m2=j.get_button(7)
-        m3=j.get_button(5)
-        m4=j.get_button(9)
-        m5=j.get_button(2)
-        m6=j.get_button(4)
+        m1=j.get_button(9)
+        m2=j.get_button(10)
+        m3=j.get_button(6)
+        m4=j.get_button(8)
+        m5=j.get_button(11)
+        m6=j.get_button(7)
         hat=j.get_hat(0)
         p=' '
         data="nM"
         if m5:
                 p='vinegar'
-                if hat[1]==1:
+                if hat[1]==-1:
 
-                        p='vinegar down '
-                        data="nG"
-                elif hat[1]==-1:
                         p='vinegar up '
+                        data="nG"
+                elif hat[1]==1:
+                        p='vinegar down '
                         data="nH"#swivel
         elif m6:
-                p='lead screw1'
+                p='lead screw'
                 if  hat[1]==1:
                         p='lead screw down '
                         data="nC"
@@ -50,7 +50,7 @@ def arm():
         elif m1:
                 p='Auger '
                 if hat[1]==-1 or hat[0]==-1:
-                        p='Auger drill up '
+                        p='Auger drill'
                         data="nA"
                 elif hat[1]==1 or hat[0]==1:         
                         p='auger remove '
@@ -65,10 +65,10 @@ def arm():
                         data="nF"
         elif m4:
                 p='Drill Burst'
-                if hat[1]==-1 :
+                if hat[1]==1 :
                         p='Drill Active'
                         data="nK"
-                elif hat[1]==1 :
+                elif hat[1]==-1 :
                         p='full kill'
                         data="nL"#gripper
         else:

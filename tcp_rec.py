@@ -11,9 +11,10 @@ s.listen(1)
 
 conn, addr = s.accept()
 print 'Connection address:', addr
-while 1:
-    data = conn.recv(12)
-    if not data: break
-    print  data
-    
-conn.close()
+try:
+    while 1:
+        data = conn.recv(13)
+        if not data: break
+        print  data
+except KeyboardInterrupt:
+    conn.close()

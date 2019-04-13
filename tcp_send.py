@@ -40,8 +40,7 @@ def arm():
 				elif hat[1]==1:
 						p='1st link linear up '
 						data="nD"#actuator
-				p='Swivel'
-				if hat[0]==1:
+				elif hat[0]==1:
 
 						p='swivel clockwise '
 						data="nK"
@@ -49,27 +48,27 @@ def arm():
 						p='swivel anticlockwise '
 						data="nL"#swivel
 		elif m3:
-				p='Roll'
+				p='Pitch Roll'
 				if hat[0]==1 :
 						p='Roll clockwise '
-						data="nE"
+						data="nJ"
 				elif hat[0]==-1:
 						p='Roll anticlockwise'
-						data="nF"
-				p='Pitch'
-				if hat[1]==-1:
-						p='Pitch up '
 						data="nI"
+				
+				elif hat[1]==-1:
+						p='Pitch up '
+						data="nF"
 				elif hat[1]==1:
 						p='Pitch down'
-						data="nJ"
+						data="nE"
 		elif m6:
 				p='gripper'
 				if hat[1]==-1:
-						p='gripper close '
+						p='gripper open '
 						data="nA"
 				elif hat[1]==1:         
-						p='gripper open '
+						p='gripper close'
 						data="nB"
 		
 				

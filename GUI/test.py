@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from gui import Ui_MainWindow 
-from PyQt5.QtWidgets import QApplication
 import sys
 endlat=[]
 endlon=[]
@@ -9,14 +8,13 @@ class mywindow(QtWidgets.QMainWindow):
     def __init__(self):    
         super(mywindow, self).__init__()        
         self.ui = Ui_MainWindow()        
-        self.ui.setupUi(self)     
-        self.ui.PlotButton.clicked.connect(self.plot)
+        self.ui.setupUi(self)
+
+        self.ui.PlotButton.clicked.connect(self.btnClicked)
         self.ui.chgEnd.clicked.connect(self.choosePoint)
 
-
-    def plot(self):
+    def btnClicked(self):
     	global endlat,endlon,n
-        
         
         #locals()['self.ui.Latitude_{}'.format(i+1)]=0
         endlat=[float(self.ui.Latitude_1.text()),float(self.ui.Latitude_2.text()),float(self.ui.Latitude_3.text()),float(self.ui.Latitude_4.text()),float(self.ui.Latitude_5.text()),float(self.ui.Latitude_6.text()),0]
@@ -32,7 +30,6 @@ class mywindow(QtWidgets.QMainWindow):
     	n=n+1
     	if n==6:
     		n=0
-
  
 app = QtWidgets.QApplication([])
 application = mywindow()
