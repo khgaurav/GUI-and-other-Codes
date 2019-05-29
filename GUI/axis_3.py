@@ -11,19 +11,19 @@ class axis_3(QWidget):
         super(axis_3, self).__init__(parent=parent)
         self.title = 'Axis Camera 3'
         
-        self.width = 320
-        self.height = 240
+        self.width = 453
+        self.height = 367
         self.initUI()
 
     def initUI(self):
         self.setWindowTitle(self.title)
-        self.resize(320,240)
+        self.resize(453,367)
         # create a label
         # create a label
         self.label = QLabel(self)        
-        self.label.resize(320, 240)
+        self.label.resize(453, 367)
         self.label1 = QLabel(self)
-        #self.label1.move(320, 240)
+        #self.label1.move(453, 367)
 
         self.axis = QPushButton(self)
         self.axis.setGeometry(QtCore.QRect(0, 0, 85, 16))
@@ -65,7 +65,7 @@ class Thread(QThread):
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 convertToQtFormat = QImage(rgbImage.data, rgbImage.shape[1], rgbImage.shape[0], QImage.Format_RGB888)
                 convertToQtFormat = QPixmap.fromImage(convertToQtFormat)
-                p = convertToQtFormat.scaled(320, 240)#), Qt.KeepAspectRatio)
+                p = convertToQtFormat.scaled(453, 367)#), Qt.KeepAspectRatio)
                 self.changePixmap.emit(p)
                 now = datetime.datetime.now()
                 sec = now.second

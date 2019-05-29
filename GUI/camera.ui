@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
-    <height>510</height>
+    <width>1366</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -17,81 +17,35 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="App" name="mast_camera" native="true">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>320</width>
-      <height>240</height>
+      <x>1</x>
+      <y>1</y>
+      <width>1371</width>
+      <height>741</height>
      </rect>
     </property>
-   </widget>
-   <widget class="axis_1" name="axis_1" native="true">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>0</y>
-      <width>320</width>
-      <height>240</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="axis_2" name="axis_2" native="true">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>240</y>
-      <width>320</width>
-      <height>240</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="axis_3" name="axis_3" native="true">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>240</y>
-      <width>320</width>
-      <height>240</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="motor_Code" name="motorcode" native="true">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>9</y>
-      <width>320</width>
-      <height>231</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="axis_4" name="axis_4" native="true">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>240</y>
-      <width>320</width>
-      <height>240</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="Logo">
-    <property name="geometry">
-     <rect>
-      <x>860</x>
-      <y>0</y>
-      <width>100</width>
-      <height>100</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>logo1.png</pixmap>
-    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="App" name="mast_camera" native="true"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="axis_1" name="axis_1" native="true"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="motor_Code" name="motorcode" native="true"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="axis_2" name="axis_2" native="true"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="axis_3" name="axis_3" native="true"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="axis_4" name="axis_4" native="true"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -99,7 +53,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>960</width>
+     <width>1366</width>
      <height>23</height>
     </rect>
    </property>

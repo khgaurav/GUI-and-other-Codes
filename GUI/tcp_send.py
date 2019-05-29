@@ -35,21 +35,21 @@ class Thread(QThread):
 			data="nM"
 			if m1:
 					p='2nd link'
-					if hat[1]==1 :
+					if hat[1]==-1 :
 						p='link 2 linear  up'
-						data="nG"
-					elif hat[1]==-1 :
+						data="nC"
+					elif hat[1]== 1 :
 						p='link 2 linear down'
-						data="nH"
+						data="nD"
 					
 			elif m2:
 					p='1st Link'
 					if  hat[1]==-1:
-							p='1st link linear down '
-							data="nC"
+							p='1st link linear up'
+							data="nG"
 					elif hat[1]==1:
-							p='1st link linear up '
-							data="nD"#actuator
+							p='1st link linear down '
+							data="nH"#actuator
 					elif hat[0]==1:
 
 							p='swivel clockwise '
@@ -234,56 +234,59 @@ class SciThread(QThread):
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 	def arm(self):			
-		m1=self.j.get_button(9)
+		m1=self.j.get_button(4)
 		m2=self.j.get_button(10)
 		m3=self.j.get_button(6)
 		m4=self.j.get_button(8)
 		m5=self.j.get_button(11)
 		m6=self.j.get_button(7)
+		m7=self.j.get_button(9)
 		hat=self.j.get_hat(0)
 		p=' '
 		data="nM"
 		if m5:
-			p='vinegar'
-			if hat[1]==-1:
+			p='Bradford Reagent'
+			if hat[1]==1:
 
-					p='vinegar up '
+					p='Bradford down '
 					data="nG"
-			elif hat[1]==1:
-					p='vinegar down '
-					data="nH"#swivel
-		elif m6:
+			elif hat[1]==-1:
+					p='Bradford up'
+					data="nH"
+		elif m3:
 			p='lead screw'
 			if  hat[1]==1:
 					p='lead screw down '
 					data="nC"
 			elif hat[1]==-1:
 					p='lead screw  up '
-					data="nD"#actuator
-		elif m2:
-			p='water tube'
-			if hat[1]==-1 :
-					p='water tube up '
-					data="nI"
-			elif hat[1]==1:
-					p='water tube down'
-					data="nJ"
-		elif m1:
-			p='Auger '
-			if hat[1]==-1 or hat[0]==-1:
-					p='Auger drill'
-					data="nA"
-			elif hat[1]==1 or hat[0]==1:         
-					p='auger remove '
-					data="nB"
-		elif m3:
-			p='collector plate'
-			if hat[0]==-1:
-					p='collector clockwise '
+					data="nD"
+			elif hat[0]==-1:
+					p='collector anti-clockwise '
 					data="nE"
 			elif hat[0]==1 :
-					p='collector anti-clockwise '
+					p='collector clockwise '
 					data="nF"
+
+			
+		elif m2:
+			p='water tube'
+			if hat[1]==1 :
+					p='water tube down '
+					data="nI"
+			elif hat[1]==-1:
+					p='water tube up'
+					data="nJ"			
+		elif m6:
+			p='Auger'
+			if hat[1]==1:
+					p='Auger drill'
+					data="nA"
+			elif hat[1]==-1:         
+					p='auger remove '
+					data="nB"
+			
+
 		elif m4:
 			p='Drill Burst'
 			if hat[1]==1 :
@@ -291,7 +294,23 @@ class SciThread(QThread):
 					data="nK"
 			elif hat[1]==-1 :
 					p='full kill'
-					data="nL"#gripper
+					data="nL"
+		elif m7:
+			p='Bradford water syringe'
+			if hat[1]==1 :
+					p='Bradford water syringe down'
+					data="nP"
+			elif hat[1]==-1 :
+					p='Bradford water syringe up'
+					data="nQ"
+		elif m1:
+			p='HCl syringe'
+			if hat[1]==-1 :
+					p='HCl syringe up'
+					data="nX"
+			elif hat[1]==1 :
+					p='HCl syringe down'
+					data="nW"
 		else:
 			p="N/A"
 		#print(p+data)
