@@ -2,7 +2,7 @@
 
 import math
 import serial
-ser=serial.Serial('/dev/ttyUSB0',38400)
+ser=serial.Serial('/dev/ttyUSB0',9600)
 
 while 1:
-    print(ord(ser.read()))
+    ser.write('K')

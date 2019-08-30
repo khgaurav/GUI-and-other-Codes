@@ -64,22 +64,22 @@ def motorcode():
 	x1=j.get_axis(0)
 	y1=j.get_axis(1)
 	gear=j.get_axis(3)
-	gear=int(map1(gear,-1.0,1.0,9,0))
-	x=map1(x1,-1.0,1.0,0.0,9999)
-	y=map1(y1,-1.0,1.0,0.0,9999)
+	gear=int(map1(gear,-1.0,1.0,4,1))
+	x=map1(x1,-1.0,1.0,0.0,15999)
+	y=map1(y1,-1.0,1.0,0.0,15999)
 	zero=j.get_axis(2)
 	if(zero>0.7):
-		x=9999
-		y=4999
+		x=15999
+		y=7999
 	elif(zero<-0.7):
 		x=0
-		y=4999
-	x=str(int(x)).zfill(4)
-	y=str(int(y)).zfill(4)
+		y=7999
+	x=str(int(x)).zfill(5)
+	y=str(int(y)).zfill(5)
 	
 	#print(x,y)
-
-	ser.write('m'.encode())
+	hill=j.get_button(10)
+	ser.write('g'.encode())
 	ser.write(str(gear).encode())
 	ser.write('x'.encode())
 	ser.write(x.encode())
@@ -87,10 +87,12 @@ def motorcode():
 	#print(ser.read(),ser.read(),ser.read(),ser.read())
 	ser.write('y'.encode())
 	ser.write(y.encode())
+	ser.write('h'.encode())
+	ser.write(str(hill).encode())
 	#print(ser.read(),ser.read(),ser.read(),ser.read())
-	print('m'+str(gear)+'x'+x+'y'+y)
+	print('g'+str(gear)+'x'+x+'y'+y+'h'+str(hill))
 count =0
-ser=serial.Serial('/dev/ttyUSB0',9600)
+ser=serial.Serial('/dev/ttyUSB0',38400)
 joystick.init()
 pygame.display.init()
 j=joystick.Joystick(0)
@@ -104,7 +106,7 @@ while(1):
 	pygame.event.pump()
 	on=j.get_button(1)
 	if on:
-		sleep(0.2)
+		sleep(0.02)
 		if j.get_button(1):
 			if active==True:
 				active=False
@@ -116,7 +118,7 @@ while(1):
 	if active:
 		change=j.get_button(0)
 		if change:
-			sleep(0.2)
+			sleep(0.02)
 			if j.get_button(0):
 				if switch==True:
 					switch=False
