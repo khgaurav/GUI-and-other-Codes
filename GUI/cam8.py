@@ -57,7 +57,7 @@ class Thread(QThread):
         
 
     def run(self):
-        cap = cv2.VideoCapture('rtsp://192.168.1.8/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
+        cap = cv2.VideoCapture('rtsp://192.168.1.10/user=admin&password=&channel=1&stream=0.sdp?real_stream--rtp-caching=1')
 
         while self.isRunning:
 

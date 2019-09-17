@@ -13,14 +13,14 @@ def map1(x,in_min,in_max,out_min,out_max):
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 def arm():
 		
-		m1=j.get_button(7)
-		m2=j.get_button(6)
-		m3=j.get_button(8)
-		m4=j.get_button(8)
-		m5=j.get_button(7)
-		m6=j.get_button(9)
-		m7=j.get_button(10)
-		hat=j.get_hat(0)
+		m1=j1.get_button(7)
+		m2=j1.get_button(6)
+		m3=j1.get_button(8)
+		m4=j1.get_button(8)
+		m5=j1.get_button(7)
+		m6=j1.get_button(9)
+		m7=j1.get_button(10)
+		hat=j1.get_hat(0)
 		p=' '
 		data="nM"
 		if m1:
@@ -94,8 +94,8 @@ def arm():
 
 def motorcode():
 		global x1,y1,gear,h
-		x1=j.get_axis(0)
-		y1=j.get_axis(1)
+		x1=j.get_axis(1)
+		y1=j1.get_axis(1)
 		c1=j.get_button(6)
 		c2=j.get_button(7)
 
@@ -155,7 +155,7 @@ def motorcode():
 		transmit.send(val)
 	
 count=0
-TCP_IP = '192.168.1.7'
+TCP_IP = '127.0.0.1'
 TCP_PORT = 5005
 BUFFER_SIZE = 1024
 MESSAGE = "Hello, World!"
@@ -170,17 +170,19 @@ if pygame.joystick.get_count() == 0:
 	print("No joystick detected")
 	exit(0)
 j=joystick.Joystick(0)
-j.init()            
+j.init()
+j1=joystick.Joystick(1)
+j1.init()
 adx='a'
 ady='b'
 switch=True
 active=True
-screen = pygame.display.set_mode((300, 200))
-clock = pygame.time.Clock()
-player_img = pygame.Surface((42, 70), pygame.SRCALPHA)
-pygame.draw.polygon(player_img, pygame.Color('dodgerblue1'),[(0, 70), (21, 2), (42, 70)])
-global player_rect
-player_rect = player_img.get_rect(center=screen.get_rect().center)
+# screen = pygame.display.set_mode((300, 200))
+# clock = pygame.time.Clock()
+# player_img = pygame.Surface((42, 70), pygame.SRCALPHA)
+# pygame.draw.polygon(player_img, pygame.Color('dodgerblue1'),[(0, 70), (21, 2), (42, 70)])
+# global player_rect
+# player_rect = player_img.get_rect(center=screen.get_rect().center)
 
 try:
 	while(1):    
@@ -212,17 +214,17 @@ try:
 					if switch:
 							
 							motorcode()
-							vec=Vector2(x1,y1)
-							radius, angle = vec.as_polar()
-							adjusted_angle = (angle+90) % 360
-							pygame.display.set_caption('Gear {:2d} '.format(gear))
-							# Rotate the image and get a new rect.
-							player_rotated = pygame.transform.rotozoom(player_img, -adjusted_angle, 1)
-							player_rect = player_rotated.get_rect(center=player_rect.center)
-							screen.fill((30, 30, 30))
-							screen.blit(player_rotated, player_rect)
-							pygame.display.flip()
-							clock.tick(60)
+							# vec=Vector2(x1,y1)
+							# radius, angle = vec.as_polar()
+							# adjusted_angle = (angle+90) % 360
+							# pygame.display.set_caption('Gear {:2d} '.format(gear))
+							# # Rotate the image and get a new rect.
+							# player_rotated = pygame.transform.rotozoom(player_img, -adjusted_angle, 1)
+							# player_rect = player_rotated.get_rect(center=player_rect.center)
+							# screen.fill((30, 30, 30))
+							# screen.blit(player_rotated, player_rect)
+							# pygame.display.flip()
+							# clock.tick(60)
 							
 					else:
 							arm()

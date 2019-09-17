@@ -1,3 +1,4 @@
+ 
 import socket
 import time
 import pygame
@@ -37,10 +38,10 @@ class Thread(QThread):
 					p='2nd link'
 					if hat[1]==-1 :
 						p='link 2 linear  up'
-						data="nC"
+						data="nD"
 					elif hat[1]== 1 :
 						p='link 2 linear down'
-						data="nD"
+						data="nC"
 					
 			elif m2:
 					p='1st Link'
@@ -59,26 +60,26 @@ class Thread(QThread):
 							data="nL"#swivel
 			elif m3:
 					p='Pitch Roll'
-					if hat[0]==1 :
+					if hat[1]==-1 :
 							p='Roll clockwise '
-							data="nF"
-					elif hat[0]==-1:
-							p='Roll anticlockwise'
-							data="nE"
-					
-					elif hat[1]==-1:
-							p='Pitch up '
 							data="nJ"
 					elif hat[1]==1:
-							p='Pitch down'
+							p='Roll anticlockwise'
 							data="nI"
+					
+					elif hat[0]==1:
+							p='Pitch up '
+							data="nF"
+					elif hat[0]==-1:
+							p='Pitch down'
+							data="nE"
 			elif m6:
 					p='gripper'
 					if hat[1]==-1:
-							p='gripper open '
+							p='gripper close'
 							data="nA"
 					elif hat[1]==1:         
-							p='gripper close'
+							p='gripper open'
 							data="nB"
 			
 					
@@ -116,17 +117,17 @@ class Thread(QThread):
 
 		hat=self.j.get_hat(0)
 
-		gear=int(self.map1(gear,-1.0,1.0,4,1))
-		x=self.map1(x1,-1.0,1.0,0.0,15999)
-		y=self.map1(y1,-1.0,1.0,0.0,15999)
+		gear=int(self.map1(gear,-1.0,1.0,9,0))
+		x=self.map1(x1,-1.0,1.0,0.0,9999)
+		y=self.map1(y1,-1.0,1.0,0.0,9999)
 		
 		zero=self.j.get_axis(2)
 		if(zero>0.7):
-				x=15999
-				y=7999
+				x=9999
+				y=4999
 		elif(zero<-0.7):
 				x=0
-				y=7999
+				y=4999
 	
 		p=' '
 	
@@ -148,17 +149,17 @@ class Thread(QThread):
 						p='Mast Pitch up '
 						camera="c"
 	
-		x=str(int(x)).zfill(5)
-		y=str(int(y)).zfill(5)
+		x=str(int(x)).zfill(4)
+		y=str(int(y)).zfill(4)
 		if self.j.get_button(4):
 			sleep(0.2)
 			if self.j.get_button(4):
 				h=not h
 		if h==True:
-			hill='1'
+			hill='w'
 		else:
-			hill='0'
-		val='g'+str(gear)+"x"+str(x)+"y"+str(y)+'h'+hill
+			hill='m'
+		val=hill+str(gear)+"x"+str(x)+"y"+str(y)+camera
 
 		#clear()
 		#print(val)
@@ -169,8 +170,8 @@ class Thread(QThread):
 	def run(self):
 
 		count=0
-		TCP_IP = '192.168.43.27'
-		TCP_PORT = 1234
+		TCP_IP = '192.168.1.7'
+		TCP_PORT = 5005
 		BUFFER_SIZE = 1024
 
 		self.transmit = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -490,4 +491,3 @@ if __name__ == '__main__':
     ex = motor_Code()
     ex.show()
     sys.exit(app.exec_())
-	
